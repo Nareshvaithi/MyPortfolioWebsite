@@ -1,0 +1,45 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+ul li a{
+    @apply px-3;
+}
+.header-bg{
+    background-color: rgb(32, 94, 218);
+}
+.mobile-nav{
+    @apply fixed top-12 left-0 bg-gray-500 w-full h-2/4 items-center;
+}
+.mobile-nav li{
+    @apply py-5 border-b-2 w-full text-center text-xl;
+}
+.mobile-nav li:nth-child(6){
+    @apply py-5 border-none text-center;
+}
+.mobile-nav li a:hover{
+    @apply text-red-500 font-bold;
+
+}
+.slider{
+    @apply transition-all ease-linear delay-700
+}
+.bg-hero{
+    background-color: blue;
+    width: 100vw;
+    height: 100vh;
+}
+.aboutp p{
+    margin-bottom: 10px;
+}
+.aboutp p:nth-child(2){
+    margin-top: 10px;
+}
+.mdheader li{
+    transition: background-color 0.5s ease;
+}
+.mdheader li:hover{
+    background-color: skyblue;
+    border-radius: 60%;
+    color: black;
+    border-bottom: 2px solid red;
+}
