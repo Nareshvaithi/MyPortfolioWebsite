@@ -1,10 +1,13 @@
 import { Singleproject } from "./Singleproject"
+import weatherproimg from "/src/assets/weatherPro.png";
+import bmiproimg from "/src/assets/bmiPro.png";
+import qrcodeproimg from "/src/assets/qrcodePro.png"
 
 export const Projects = ()=>{
     const projectitems=[
-        {id:1,name:"weather fetching app",description:"weather fetching app built with react js",pic:"src/assets/weatherPro.png"},
-        {id:2,name:"bmi calculator app",description:"bmi calculator build with react js app",pic:"src/assets/bmiPro.png"},
-        {id:3,name:"qr code generator",description:"qr code generator build with react js",pic:"src/assets/qrcodePro.png"},
+        {id:1,name:"weather fetching app",description:"weather fetching app built with react js",pic:weatherproimg},
+        {id:2,name:"bmi calculator app",description:"bmi calculator build with react js app",pic:bmiproimg},
+        {id:3,name:"qr code generator",description:"qr code generator build with react js",pic:qrcodeproimg},
     ]
     return(
         <section className="bg-blue-400 capitalize font-hero-font" id="project">
