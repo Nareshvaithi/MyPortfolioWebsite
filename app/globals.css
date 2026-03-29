@@ -1,0 +1,29 @@
+@import "tailwindcss";
+
+html {
+  scroll-behavior: smooth;
+  scrollbar-width: thin;
+  scrollbar-color: #00ff88 #06060e;
+}
+
+body {
+  background: #06060e;
+  color: #e2e2f0;
+  font-family: "IBM Plex Mono", "JetBrains Mono", monospace;
+  overflow-x: hidden;
+  line-height: 1.7;
+  -webkit-font-smoothing: antialiased;
+  background-image:
+    linear-gradient(rgba(0, 255, 136, 0.04) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(0, 255, 136, 0.04) 1px, transparent 1px);
+  background-size: 50px 50px;
+}
+
+::selection {
+  background: rgba(0, 255, 136, 0.25);
+  color: #fff;
+}
+
+::-webkit-scrollbar { width: 6px; }
+::-webkit-scrollbar-track { background: #06060e; }
+::-webkit-scrollbar-thumb { background: #00ff88; border-radius: 3px; }
