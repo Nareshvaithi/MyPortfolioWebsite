@@ -50,17 +50,29 @@ export default function Projects() {
   const sectionRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
+    // Force ScrollTrigger to recalculate positions for Next.js routing
+    ScrollTrigger.refresh();
+
     const ctx = gsap.context(() => {
       gsap.from(".proj-card", {
-        y: 50, opacity: 0, duration: 0.7, stagger: 0.15, ease: "power3.out",
-        scrollTrigger: { trigger: sectionRef.current, start: "top 78%", toggleActions: "play none none none" },
+        y: 60, 
+        opacity: 0, 
+        duration: 0.8, 
+        stagger: 0.15, 
+        ease: "power3.out",
+        scrollTrigger: { 
+          trigger: sectionRef.current, 
+          start: "top 82%", // Slightly earlier trigger for a smoother feel
+          toggleActions: "play none none none" 
+        },
       });
     }, sectionRef);
+
     return () => ctx.revert();
   }, []);
 
   return (
-    <section ref={sectionRef} id="projects" style={{ paddingTop: "4rem", paddingBottom: "4rem", position: "relative" }}>
+    <section ref={sectionRef} id="projects" style={{ paddingTop: "6rem", paddingBottom: "6rem", position: "relative" }}>
       <hr style={styles.sectionDivider} />
       <div style={styles.sectionContainer}>
         <div style={styles.sectionLabel}>
@@ -70,34 +82,41 @@ export default function Projects() {
           Things I&apos;ve <span style={styles.gradientText}>Built</span>
         </h2>
 
-        <div className="grid md:grid-cols-2 gap-5">
+        <div className="grid md:grid-cols-2 gap-6">
           {projects.map((project, i) => (
             <div
               key={i}
               className="proj-card"
-              style={styles.card}
+              style={{
+                ...styles.card,
+                opacity: 1, // Ensure cards are visible by default
+                display: "flex",
+                flexDirection: "column",
+                height: "100%", // Ensures cards in the same row have equal height
+              }}
               onMouseEnter={cardHoverIn}
               onMouseLeave={cardHoverOut}
             >
               {/* Header */}
-              <div style={{ display: "flex", alignItems: "flex-start", justifyContent: "space-between", marginBottom: "0.75rem" }}>
-                <div style={{ display: "flex", alignItems: "center", gap: "0.625rem" }}>
-                  <span style={{ fontSize: "1.25rem" }}>{project.icon}</span>
-                  <h3 style={{ fontSize: "0.85rem", fontWeight: 600, color: "#fff", fontFamily: "'Syne', sans-serif" }}>
+              <div style={{ display: "flex", alignItems: "flex-start", justifyContent: "space-between", marginBottom: "1rem" }}>
+                <div style={{ display: "flex", alignItems: "center", gap: "0.75rem" }}>
+                  <span style={{ fontSize: "1.5rem" }}>{project.icon}</span>
+                  <h3 style={{ fontSize: "0.95rem", fontWeight: 700, color: "#fff", fontFamily: "'Syne', sans-serif" }}>
                     {project.title}
                   </h3>
                 </div>
                 <span
                   style={{
                     fontSize: "0.6rem",
+                    fontWeight: 600,
                     textTransform: "uppercase",
-                    letterSpacing: "0.08em",
-                    padding: "0.125rem 0.5rem",
-                    borderRadius: "9999px",
+                    letterSpacing: "0.1em",
+                    padding: "0.2rem 0.6rem",
+                    borderRadius: "4px",
                     flexShrink: 0,
                     border: `1px solid ${project.status === "production" ? "rgba(0,255,136,0.2)" : "rgba(0,204,255,0.2)"}`,
                     color: project.status === "production" ? colors.accent : colors.accent2,
-                    background: project.status === "production" ? "rgba(0,255,136,0.05)" : "rgba(0,204,255,0.05)",
+                    background: project.status === "production" ? "rgba(0,255,136,0.03)" : "rgba(0,204,255,0.03)",
                     fontFamily: "'IBM Plex Mono', monospace",
                   }}
                 >
@@ -106,21 +125,22 @@ export default function Projects() {
               </div>
 
               {/* Description */}
-              <p style={{ fontSize: "0.72rem", color: colors.textDim, marginBottom: "0.75rem", lineHeight: 1.65 }}>
+              <p style={{ fontSize: "0.8rem", color: colors.textDim, marginBottom: "1.25rem", lineHeight: 1.6, flexGrow: 1 }}>
                 {project.description}
               </p>
 
               {/* Highlights */}
-              <div style={{ marginBottom: "0.75rem", display: "flex", flexDirection: "column", gap: "0.25rem" }}>
+              <div style={{ marginBottom: "1.25rem", display: "flex", flexDirection: "column", gap: "0.4rem" }}>
                 {project.highlights.map((h, j) => (
-                  <div key={j} style={{ display: "flex", alignItems: "center", gap: "0.5rem", fontSize: "0.65rem", color: colors.textMuted }}>
-                    <span style={{ color: colors.accent, fontSize: "0.6rem" }}>▸</span> {h}
+                  <div key={j} style={{ display: "flex", alignItems: "flex-start", gap: "0.6rem", fontSize: "0.7rem", color: colors.textMuted }}>
+                    <span style={{ color: colors.accent, marginTop: "0.1rem" }}>▸</span> 
+                    <span>{h}</span>
                   </div>
                 ))}
               </div>
 
               {/* Tags */}
-              <div style={{ display: "flex", flexWrap: "wrap", gap: "0.375rem" }}>
+              <div style={{ display: "flex", flexWrap: "wrap", gap: "0.5rem", marginTop: "auto" }}>
                 {project.tags.map((tag, j) => (
                   <span key={j} style={styles.tag}>{tag}</span>
                 ))}

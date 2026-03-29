@@ -18,21 +18,56 @@ export default function About() {
   const sectionRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
+    // 1. Force ScrollTrigger to recalculate for Next.js soft-navigation
+    ScrollTrigger.refresh();
+
     const ctx = gsap.context(() => {
+      // Left side content animation
       gsap.from(".about-left", {
-        y: 40, opacity: 0, duration: 0.8, ease: "power3.out",
-        scrollTrigger: { trigger: sectionRef.current, start: "top 80%", toggleActions: "play none none none" },
+        y: 40,
+        opacity: 0,
+        duration: 0.8,
+        ease: "power3.out",
+        scrollTrigger: {
+          trigger: sectionRef.current,
+          start: "top 85%",
+          toggleActions: "play none none none",
+        },
       });
+
+      // Right side stats grid animation
       gsap.from(".stat-card", {
-        y: 30, opacity: 0, duration: 0.6, stagger: 0.1, ease: "power3.out",
-        scrollTrigger: { trigger: ".stats-grid", start: "top 85%", toggleActions: "play none none none" },
+        y: 30,
+        opacity: 0,
+        duration: 0.6,
+        stagger: 0.1,
+        ease: "power3.out",
+        scrollTrigger: {
+          trigger: ".stats-grid",
+          start: "top 90%",
+          toggleActions: "play none none none",
+        },
+      });
+
+      // Terminal window fade-in
+      gsap.from(".terminal-box", {
+        opacity: 0,
+        y: 20,
+        duration: 1,
+        delay: 0.5,
+        ease: "power2.out",
+        scrollTrigger: {
+          trigger: ".stats-grid",
+          start: "top 85%",
+        }
       });
     }, sectionRef);
+
     return () => ctx.revert();
   }, []);
 
   return (
-    <section ref={sectionRef} id="about" style={{ paddingTop: "4rem", paddingBottom: "4rem", position: "relative" }}>
+    <section ref={sectionRef} id="about" style={{ paddingTop: "6rem", paddingBottom: "6rem", position: "relative" }}>
       <hr style={styles.sectionDivider} />
       <div style={styles.sectionContainer}>
         <div style={styles.sectionLabel}>
@@ -40,15 +75,15 @@ export default function About() {
         </div>
 
         <div className="grid md:grid-cols-2 gap-12">
-          {/* Left */}
-          <div className="about-left">
+          {/* Left Side: Bio */}
+          <div className="about-left" style={{ opacity: 1 }}>
             <h2 style={styles.sectionTitle}>
               Building systems<br />that <span style={styles.gradientText}>scale</span>.
             </h2>
-            <div style={{ display: "flex", flexDirection: "column", gap: "0.75rem", fontSize: "0.85rem", color: colors.textDim, lineHeight: 1.7 }}>
+            <div style={{ display: "flex", flexDirection: "column", gap: "1rem", fontSize: "0.9rem", color: colors.textDim, lineHeight: 1.8 }}>
               <p>
                 I&apos;m Naresh Vaithi, a Software Developer Engineer at{" "}
-                <span style={{ color: colors.accent }}>Mydbops</span> — a managed database
+                <span style={{ color: colors.accent, fontWeight: 600 }}>Mydbops</span> — a managed database
                 services company operating at scale with 6,000+ servers across 300+ clients.
               </p>
               <p>
@@ -63,46 +98,68 @@ export default function About() {
             </div>
           </div>
 
-          {/* Right */}
+          {/* Right Side: Stats & Terminal */}
           <div>
-            <div className="stats-grid" style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "0.75rem" }}>
+            <div className="stats-grid" style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "1rem" }}>
               {stats.map((stat, i) => (
                 <div
                   key={i}
                   className="stat-card"
-                  style={{ ...styles.card, display: "flex", flexDirection: "column", alignItems: "flex-start", gap: "0.25rem" }}
+                  style={{ 
+                    ...styles.card, 
+                    opacity: 1,
+                    display: "flex", 
+                    flexDirection: "column", 
+                    alignItems: "flex-start", 
+                    gap: "0.4rem",
+                    padding: "1.25rem" 
+                  }}
                   onMouseEnter={cardHoverIn}
                   onMouseLeave={cardHoverOut}
                 >
-                  <span style={{ ...styles.gradientText, fontSize: "1.75rem", fontWeight: 700, fontFamily: "'Syne', sans-serif" }}>
+                  <span style={{ ...styles.gradientText, fontSize: "1.8rem", fontWeight: 700, fontFamily: "'Syne', sans-serif" }}>
                     {stat.value}
                   </span>
-                  <span style={{ fontSize: "0.62rem", color: colors.textMuted, textTransform: "uppercase", letterSpacing: "0.08em" }}>
+                  <span style={{ fontSize: "0.65rem", color: colors.textMuted, textTransform: "uppercase", letterSpacing: "0.1em", fontWeight: 600 }}>
                     {stat.label}
                   </span>
                 </div>
               ))}
             </div>
 
-            {/* Terminal */}
-            <div style={{ ...styles.terminalWindow, marginTop: "0.75rem" }}>
+            {/* Terminal Window */}
+            <div className="terminal-box" style={{ ...styles.terminalWindow, marginTop: "1rem", opacity: 1 }}>
               <div style={styles.terminalDots}>
-                <span style={{ width: "10px", height: "10px", borderRadius: "50%", background: "#ff5f57" }} />
-                <span style={{ width: "10px", height: "10px", borderRadius: "50%", background: "#ffbd2e" }} />
-                <span style={{ width: "10px", height: "10px", borderRadius: "50%", background: "#28c840" }} />
-                <span style={{ color: colors.textMuted, marginLeft: "0.5rem", fontSize: "0.65rem" }}>~/naresh</span>
+                <div style={{ display: "flex", gap: "6px" }}>
+                  <span style={{ width: "10px", height: "10px", borderRadius: "50%", background: "#ff5f57" }} />
+                  <span style={{ width: "10px", height: "10px", borderRadius: "50%", background: "#ffbd2e" }} />
+                  <span style={{ width: "10px", height: "10px", borderRadius: "50%", background: "#28c840" }} />
+                </div>
+                <span style={{ color: colors.textMuted, marginLeft: "0.75rem", fontSize: "0.7rem", fontFamily: "monospace" }}>~/naresh — zsh</span>
               </div>
-              <code style={{ color: colors.textDim, lineHeight: 1.8 }}>
-                <span style={{ color: colors.accent }}>$</span> echo $STACK<br />
-                <span style={{ color: colors.accent2 }}>[&quot;Go&quot;, &quot;React&quot;, &quot;TypeScript&quot;, &quot;MongoDB&quot;, &quot;MySQL&quot;, &quot;PostgreSQL&quot;]</span><br />
-                <span style={{ color: colors.accent }}>$</span> uptime<br />
-                <span style={{ color: colors.accent2 }}>building since 2019 — still going strong</span>
-                <span style={{ color: colors.accent, animation: "blink 1s step-end infinite" }}>▊</span>
-              </code>
+              <div style={{ padding: "0.5rem 0" }}>
+                <code style={{ color: colors.textDim, fontSize: "0.75rem", lineHeight: 2, fontFamily: "'IBM Plex Mono', monospace" }}>
+                  <span style={{ color: colors.accent }}>$</span> echo $STACK<br />
+                  <span style={{ color: colors.accent2 }}>[&quot;Go&quot;, &quot;React&quot;, &quot;TypeScript&quot;, &quot;MongoDB&quot;, &quot;MySQL&quot;]</span><br />
+                  <span style={{ color: colors.accent }}>$</span> uptime<br />
+                  <span style={{ color: colors.accent2 }}>building since 2019 — still going strong</span>
+                  <span className="terminal-cursor" style={{ color: colors.accent, marginLeft: "4px" }}>▊</span>
+                </code>
+              </div>
             </div>
           </div>
         </div>
       </div>
+
+      {/* Adding a global style for the blinking cursor */}
+      <style jsx global>{`
+        @keyframes blink {
+          50% { opacity: 0; }
+        }
+        .terminal-cursor {
+          animation: blink 1s step-end infinite;
+        }
+      `}</style>
     </section>
   );
 }

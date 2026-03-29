@@ -58,17 +58,43 @@ export default function Skills() {
   const sectionRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
+    // Ensure all ScrollTriggers are recalculated for Next.js soft-navigation
+    ScrollTrigger.refresh();
+
     const ctx = gsap.context(() => {
+      // 1. Category Cards Animation
       gsap.from(".skill-cat", {
-        y: 40, opacity: 0, duration: 0.7, stagger: 0.12, ease: "power3.out",
-        scrollTrigger: { trigger: sectionRef.current, start: "top 78%", toggleActions: "play none none none" },
+        y: 50,
+        opacity: 0,
+        duration: 0.8,
+        stagger: 0.15,
+        ease: "power3.out",
+        scrollTrigger: {
+          trigger: sectionRef.current,
+          start: "top 85%", 
+          toggleActions: "play none none none",
+          // markers: true, // Uncomment this line to debug the trigger points!
+        },
+      });
+  
+      // 2. Progress Bars Animation
+      gsap.from(".skill-progress-bar", {
+        width: "0%",
+        duration: 1.2,
+        ease: "power2.out",
+        stagger: 0.05,
+        scrollTrigger: {
+          trigger: sectionRef.current,
+          start: "top 80%",
+        },
       });
     }, sectionRef);
+  
     return () => ctx.revert();
   }, []);
 
   return (
-    <section ref={sectionRef} id="skills" style={{ paddingTop: "4rem", paddingBottom: "4rem", position: "relative" }}>
+    <section ref={sectionRef} id="skills" style={{ paddingTop: "6rem", paddingBottom: "6rem", position: "relative" }}>
       <hr style={styles.sectionDivider} />
       <div style={{ ...styles.sectionContainer, position: "relative", zIndex: 10 }}>
         <div style={styles.sectionLabel}>
@@ -83,31 +109,37 @@ export default function Skills() {
             <div
               key={i}
               className="skill-cat"
-              style={styles.card}
+              style={{
+                ...styles.card,
+                opacity: 1, // Ensure base state is visible if JS fails
+              }}
               onMouseEnter={cardHoverIn}
               onMouseLeave={cardHoverOut}
             >
-              <div style={{ display: "flex", alignItems: "center", gap: "0.75rem", marginBottom: "1rem" }}>
-                <span style={{ fontSize: "1.1rem" }}>{category.icon}</span>
-                <h3 style={{ fontSize: "0.75rem", fontWeight: 600, color: "#fff", textTransform: "uppercase", letterSpacing: "0.08em" }}>
+              <div style={{ display: "flex", alignItems: "center", gap: "0.75rem", marginBottom: "1.25rem" }}>
+                <span style={{ fontSize: "1.2rem", color: colors.accent }}>{category.icon}</span>
+                <h3 style={{ fontSize: "0.8rem", fontWeight: 600, color: "#fff", textTransform: "uppercase", letterSpacing: "0.1em" }}>
                   {category.title}
                 </h3>
               </div>
 
-              <div style={{ display: "flex", flexDirection: "column", gap: "0.875rem" }}>
+              <div style={{ display: "flex", flexDirection: "column", gap: "1rem" }}>
                 {category.skills.map((skill, j) => (
                   <div key={j}>
-                    <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "0.35rem" }}>
-                      <span style={{ fontSize: "0.75rem", color: colors.textDim }}>{skill.name}</span>
-                      <span style={{ fontSize: "0.6rem", color: colors.textMuted }}>{skill.level}%</span>
+                    <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "0.4rem" }}>
+                      <span style={{ fontSize: "0.8rem", color: colors.textDim, fontWeight: 500 }}>{skill.name}</span>
+                      <span style={{ fontSize: "0.65rem", color: colors.textMuted, fontFamily: "monospace" }}>{skill.level}%</span>
                     </div>
-                    <div style={{ height: "6px", borderRadius: "3px", background: "rgba(255,255,255,0.05)", overflow: "hidden", width: "100%" }}>
+                    {/* Progress Track */}
+                    <div style={{ height: "6px", borderRadius: "10px", background: "rgba(255,255,255,0.03)", overflow: "hidden" }}>
+                      {/* Animated Fill */}
                       <div
+                        className="skill-progress-bar"
                         style={{
-                          height: "6px",
-                          borderRadius: "3px",
+                          height: "100%",
                           width: `${skill.level}%`,
                           background: category.color,
+                          borderRadius: "10px",
                         }}
                       />
                     </div>
